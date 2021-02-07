@@ -20,8 +20,7 @@ impl CircularBuffer {
         if self.is_full() { return false }
         self.elems[self.at_in] = v;
         self.num_elem = self.num_elem + 1;
-        self.at_in = self.at_in + 1;
-        if self.at_in >= self.capacity { self.at_in = 0; }
+        CircularBuffer::increment_and_clip(&mut self.at_in, self.capacity);
         true
     }
     pub fn get(&mut self) -> i32 {
