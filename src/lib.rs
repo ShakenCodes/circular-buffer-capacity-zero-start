@@ -10,7 +10,7 @@ impl CircularBuffer {
     fn is_empty(&self) -> bool { true }
     fn is_full(&self) -> bool { self.num_elem >= self.capacity }
     fn size(&self) -> usize { 0 }
-    fn put(&self, _: i32) -> bool { false }
+    fn put(&self, _: i32) -> bool { self.num_elem < self.capacity }
     fn get(&self) -> i32 { i32::MIN }
 }
 
@@ -40,5 +40,10 @@ mod tests {
         assert_eq!(false, b.is_full());
         assert!(b.is_empty());
         assert_eq!(0, b.size());
+    }
+    #[test]
+    fn given_capacity_one_when_put_then_return_true() {
+        let b = CircularBuffer::new(1);
+        assert_eq!(true, b.put(42));
     }
 }
