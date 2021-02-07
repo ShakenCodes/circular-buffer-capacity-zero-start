@@ -72,23 +72,21 @@ mod tests {
     }
     #[test]
     fn given_capacity_one_and_one_put_when_get_then_return_value_in_put() {
-        let v = 99;
         let mut b = CircularBuffer::new(1);
+        let v = 99;
         assert!(b.put(v));
         assert_eq!(v, b.get());
     }
     #[test]
     fn given_capacity_one_and_one_put_when_get_then_is_full_false_is_empty_true() {
-        let mut b = CircularBuffer::new(1);
-        assert!(b.put(43));
+        let mut b = create_full_buffer(1);
         b.get();
         assert_eq!(false, b.is_full());
         assert!(b.is_empty());
     }
     #[test]
     fn given_capacity_one_and_one_put_when_get_twice_then_return_is_min_int() {
-        let mut b = CircularBuffer::new(1);
-        assert!(b.put(43));
+        let mut b = create_full_buffer(1);
         b.get();
         assert_eq!(i32::MIN, b.get());
     }
