@@ -9,9 +9,12 @@ struct CircularBuffer {
 impl CircularBuffer {
     pub fn new(c: usize) -> CircularBuffer {
         CircularBuffer {
-            capacity: c, num_elem: 0,
-            at_in: 0, at_out: 0,
-            elems: vec![i32::MIN, c as i32] }
+            capacity: c,
+            num_elem: 0,
+            at_in: 0,
+            at_out: 0,
+            elems: vec![i32::MIN; c + 1]
+        }
     }
     pub fn is_empty(&self) -> bool { self.num_elem == 0 }
     pub fn is_full(&self) -> bool { self.num_elem >= self.capacity }
@@ -31,7 +34,7 @@ impl CircularBuffer {
     }
     fn increment_and_clip(v: &mut usize, c: usize) {
         *v = *v + 1;
-        if *v >= c { *v = 0; }
+        if *v >= (c + 1) { *v = 0; }
     }
 }
 
