@@ -142,4 +142,27 @@ mod tests {
         assert!(b.put(v));
         assert_eq!(v, b.get());
     }
+    #[test]
+    fn given_capacity_two_and_put_twice_get_twice_put_twice_again_when_get_twice_then_value_returned_matches_last_put() {
+        let v = 11;
+        let mut b = CircularBuffer::new(2);
+        assert!(b.put(42));
+        assert!(b.put(44));
+        b.get();
+        b.get();
+        assert!(b.put(v));
+        assert_eq!(v, b.get());
+    }
+    #[test]
+    fn given_capacity_two_and_put_twice_get_twice_when_put_twice_then_is_full_true_is_empty_false() {
+        let mut b = CircularBuffer::new(2);
+        assert!(b.put(42));
+        assert!(b.put(44));
+        b.get();
+        b.get();
+        assert!(b.put(46));
+        assert!(b.put(48));
+        assert_eq!(true, b.is_full());
+        assert_eq!(false, b.is_empty());
+    }
 }
