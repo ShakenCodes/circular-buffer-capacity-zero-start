@@ -92,6 +92,14 @@ mod tests {
         assert_eq!(false, b.is_empty());
     }
     #[test]
+    fn given_capacity_two_when_put_twice_then_return_true_is_full_true_is_empty_false() {
+        let mut b = CircularBuffer::new(2);
+        assert!(b.put(-1));
+        assert_eq!(true, b.put(42));
+        assert_eq!(true, b.is_full());
+        assert_eq!(false, b.is_empty());
+    }
+    #[test]
     fn given_capacity_two_and_put_twice_when_get_twice_then_value_returned_matches_put() {
         let v1 = 11;
         let v2 = -99;
