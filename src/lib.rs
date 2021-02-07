@@ -1,14 +1,16 @@
 struct CircularBuffer {
     capacity: usize,
     num_elem: usize,
+    at_in: usize,
+    at_out: usize,
     elems: Vec<i32>,
 }
 
 impl CircularBuffer {
     fn new(c: usize) -> CircularBuffer {
         CircularBuffer {
-            capacity: c,
-            num_elem: 0,
+            capacity: c, num_elem: 0,
+            at_in: 0, at_out: 0,
             elems: vec![i32::MIN, c as i32] }
     }
     fn is_empty(&self) -> bool { self.num_elem == 0 }
@@ -16,14 +18,19 @@ impl CircularBuffer {
     fn size(&self) -> usize { 0 }
     fn put(&mut self, v: i32) -> bool {
         if self.is_full() { return false }
-        self.elems[self.num_elem] = v;
+        self.elems[self.at_in] = v;
         self.num_elem = self.num_elem + 1;
+        self.at_in = self.at_in + 1;
+        if self.at_in >= self.capacity { self.at_in = 0; }
         true
     }
     fn get(&mut self) -> i32 {
         if self.is_empty() { return i32::MIN }
+        let v = self.elems[self.at_out];
         self.num_elem = self.num_elem - 1;
-        self.elems[self.num_elem]
+        self.at_out = self.at_out + 1;
+        if self.at_out >= self.capacity { self.at_out = 0; }
+        v
     }
 }
 
@@ -106,7 +113,20 @@ mod tests {
         let mut b = CircularBuffer::new(2);
         assert!(b.put(v1));
         assert!(b.put(v2));
-        assert_eq!(v2, b.get());
         assert_eq!(v1, b.get());
+        assert_eq!(v2, b.get());
     }
+    // #[test]
+    // fn given_capacity_two_and_put_twice_get_put_again_when_get_twice_then_value_returned_matches_later_puts() {
+    //     let v1 = 11;
+    //     let v2 = -99;
+    //     let v3 = 2020;
+    //     let mut b = CircularBuffer::new(2);
+    //     assert!(b.put(v1));
+    //     assert!(b.put(v2));
+    //     b.get();
+    //     assert!(b.put(v3));
+    //     assert_eq!(v2, b.get());
+    //     assert_eq!(v3, b.get());
+    // }
 }
