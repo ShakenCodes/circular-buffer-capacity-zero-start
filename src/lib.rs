@@ -158,13 +158,24 @@ mod tests {
         assert_eq!(false, b.is_empty());
     }
     #[test]
-    fn given_capacity_ten_when_put_full_emptied_and_put_full_then_last_cell_matches() {
+    fn given_capacity_and_filled_and_emptied_twice_when_put_and_get_then_last_value_matches() {
         let mut b = create_full_buffer(10);
         get_n_times(&mut b, 10);
         put_n_times(&mut b, 10);
         get_n_times(&mut b, 10);
-        assert!(b.put(99));
-        assert_eq!(99, b.get());
+
+        let v = 99;
+        assert!(b.put(v));
+        assert_eq!(v, b.get());
+        assert_eq!(true, b.is_empty());
+        assert_eq!(false, b.is_full());
+    }
+    #[test]
+    fn given_capacity_and_filled_and_emptied_twice_then_is_empty_true_is_full_false() {
+        let mut b = create_full_buffer(10);
+        get_n_times(&mut b, 10);
+        put_n_times(&mut b, 10);
+        get_n_times(&mut b, 10);
         assert_eq!(true, b.is_empty());
         assert_eq!(false, b.is_full());
     }
