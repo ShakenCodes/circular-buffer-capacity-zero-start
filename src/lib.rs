@@ -7,16 +7,16 @@ struct CircularBuffer {
 }
 
 impl CircularBuffer {
-    fn new(c: usize) -> CircularBuffer {
+    pub fn new(c: usize) -> CircularBuffer {
         CircularBuffer {
             capacity: c, num_elem: 0,
             at_in: 0, at_out: 0,
             elems: vec![i32::MIN, c as i32] }
     }
-    fn is_empty(&self) -> bool { self.num_elem == 0 }
-    fn is_full(&self) -> bool { self.num_elem >= self.capacity }
-    fn size(&self) -> usize { 0 }
-    fn put(&mut self, v: i32) -> bool {
+    pub fn is_empty(&self) -> bool { self.num_elem == 0 }
+    pub fn is_full(&self) -> bool { self.num_elem >= self.capacity }
+    pub fn size(&self) -> usize { 0 }
+    pub fn put(&mut self, v: i32) -> bool {
         if self.is_full() { return false }
         self.elems[self.at_in] = v;
         self.num_elem = self.num_elem + 1;
@@ -24,13 +24,16 @@ impl CircularBuffer {
         if self.at_in >= self.capacity { self.at_in = 0; }
         true
     }
-    fn get(&mut self) -> i32 {
+    pub fn get(&mut self) -> i32 {
         if self.is_empty() { return i32::MIN }
         let v = self.elems[self.at_out];
         self.num_elem = self.num_elem - 1;
-        self.at_out = self.at_out + 1;
-        if self.at_out >= self.capacity { self.at_out = 0; }
+        CircularBuffer::increment_and_clip(&mut self.at_out, self.capacity);
         v
+    }
+    fn increment_and_clip(v: &mut usize, c: usize) {
+        *v = *v + 1;
+        if *v >= c { *v = 0; }
     }
 }
 
