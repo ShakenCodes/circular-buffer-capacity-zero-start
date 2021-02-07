@@ -157,9 +157,17 @@ mod tests {
         assert_eq!(true, b.is_full());
         assert_eq!(false, b.is_empty());
     }
-//    #[test]
-//    fn given_capacity_ten_when_put_full_emptied_and_put_full_then_last_cell_matches() {
-//    }
+    #[test]
+    fn given_capacity_ten_when_put_full_emptied_and_put_full_then_last_cell_matches() {
+        let mut b = create_full_buffer(10);
+        get_n_times(&mut b, 10);
+        put_n_times(&mut b, 10);
+        get_n_times(&mut b, 10);
+        assert!(b.put(99));
+        assert_eq!(99, b.get());
+        assert_eq!(true, b.is_empty());
+        assert_eq!(false, b.is_full());
+    }
 
     fn create_full_buffer(c: usize) -> CircularBuffer {
         let mut b = CircularBuffer::new(c);
