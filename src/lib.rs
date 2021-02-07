@@ -74,4 +74,11 @@ mod tests {
         assert!(b.is_empty());
         assert_eq!(0, b.size());
     }
+    #[test]
+    fn given_capacity_one_and_one_put_when_get_twice_then_return_is_min_int() {
+        let mut b = CircularBuffer::new(1);
+        assert!(b.put(43));
+        b.get();
+        assert_eq!(i32::MIN, b.get());
+    }
 }
