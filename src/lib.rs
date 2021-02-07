@@ -7,7 +7,7 @@ impl CircularBuffer {
     fn new(c: usize) -> CircularBuffer {
         CircularBuffer { capacity: c, num_elem: 0}
     }
-    fn is_empty(&self) -> bool { true }
+    fn is_empty(&self) -> bool { self.num_elem == 0 }
     fn is_full(&self) -> bool { self.num_elem >= self.capacity }
     fn size(&self) -> usize { 0 }
     fn put(&mut self, _: i32) -> bool {
@@ -46,9 +46,10 @@ mod tests {
         assert_eq!(0, b.size());
     }
     #[test]
-    fn given_capacity_one_when_put_then_return_true_is_full_true() {
+    fn given_capacity_one_when_put_then_return_true_is_full_true_is_empty_false() {
         let mut b = CircularBuffer::new(1);
         assert_eq!(true, b.put(42));
         assert!(b.is_full());
+        assert_eq!(false, b.is_empty());
     }
 }
