@@ -95,7 +95,7 @@ mod tests {
     fn given_capacity_two_when_put_twice_then_return_true_is_full_true_is_empty_false() {
         let mut b = CircularBuffer::new(2);
         assert!(b.put(-1));
-        assert_eq!(true, b.put(42));
+        assert!(b.put(42));
         assert_eq!(true, b.is_full());
         assert_eq!(false, b.is_empty());
     }
