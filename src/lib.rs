@@ -131,4 +131,15 @@ mod tests {
         assert_eq!(v2, b.get());
         assert_eq!(v3, b.get());
     }
+    #[test]
+    fn given_capacity_two_and_put_twice_get_twice_put_again_when_get_twice_then_value_returned_matches_last_put() {
+        let v = 11;
+        let mut b = CircularBuffer::new(2);
+        assert!(b.put(42));
+        assert!(b.put(44));
+        b.get();
+        b.get();
+        assert!(b.put(v));
+        assert_eq!(v, b.get());
+    }
 }
