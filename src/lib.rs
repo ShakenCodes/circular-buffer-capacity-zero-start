@@ -22,19 +22,19 @@ impl CircularBuffer {
         if self.is_full() { return false }
         self.elems[self.at_in] = v;
         self.num_elem = self.num_elem + 1;
-        CircularBuffer::increment_and_clip(&mut self.at_in, self.capacity);
+        self.at_in = CircularBuffer::increment_and_clip(self.at_in, self.capacity);
         true
     }
     pub fn get(&mut self) -> i32 {
         if self.is_empty() { return i32::MIN }
         let v = self.elems[self.at_out];
         self.num_elem = self.num_elem - 1;
-        CircularBuffer::increment_and_clip(&mut self.at_out, self.capacity);
+        self.at_out = CircularBuffer::increment_and_clip(self.at_out, self.capacity);
         v
     }
-    fn increment_and_clip(v: &mut usize, c: usize) {
-        *v = *v + 1;
-        if *v >= (c + 1) { *v = 0; }
+    fn increment_and_clip(n: usize, c: usize) -> usize {
+        if n >= c { return 0 }
+        n + 1
     }
 }
 
