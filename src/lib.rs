@@ -17,7 +17,11 @@ impl CircularBuffer {
         self.num_elem = self.num_elem + 1;
         true
     }
-    fn get(&self) -> i32 { self.elem }
+    fn get(&mut self) -> i32 {
+        if self.is_empty() { return i32::MIN }
+        self.num_elem = self.num_elem - 1;
+        self.elem
+    }
 }
 
 #[cfg(test)]
@@ -37,7 +41,7 @@ mod tests {
     }
     #[test]
     fn given_capacity_zero_when_get_then_return_min_int() {
-        let b = CircularBuffer::new(0);
+        let mut b = CircularBuffer::new(0);
         assert_eq!(i32::MIN, b.get());
     }
     #[test]
@@ -60,5 +64,14 @@ mod tests {
         let mut b = CircularBuffer::new(1);
         assert!(b.put(v));
         assert_eq!(v, b.get());
+    }
+    #[test]
+    fn given_capacity_one_and_one_put_when_get_then_is_full_false_is_empty_true_size_zero() {
+        let mut b = CircularBuffer::new(1);
+        assert!(b.put(43));
+        b.get();
+        assert_eq!(false, b.is_full());
+        assert!(b.is_empty());
+        assert_eq!(0, b.size());
     }
 }
