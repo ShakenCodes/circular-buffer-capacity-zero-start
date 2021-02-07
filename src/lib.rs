@@ -179,6 +179,16 @@ mod tests {
         assert_eq!(true, b.is_empty());
         assert_eq!(false, b.is_full());
     }
+    #[test]
+    fn given_capacity_and_filled_and_emptied_twice_when_filled_again_then_is_empty_false_is_full_true() {
+        let mut b = create_full_buffer(10);
+        get_n_times(&mut b, 10);
+        put_n_times(&mut b, 10);
+        get_n_times(&mut b, 10);
+        put_n_times(&mut b, 10);
+        assert_eq!(false, b.is_empty());
+        assert_eq!(true, b.is_full());
+    }
 
     fn create_full_buffer(c: usize) -> CircularBuffer {
         let mut b = CircularBuffer::new(c);
