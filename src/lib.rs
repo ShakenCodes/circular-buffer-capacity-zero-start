@@ -15,7 +15,6 @@ impl CircularBuffer {
     }
     pub fn is_empty(&self) -> bool { self.num_elem == 0 }
     pub fn is_full(&self) -> bool { self.num_elem >= self.capacity }
-    pub fn size(&self) -> usize { 0 }
     pub fn put(&mut self, v: i32) -> bool {
         if self.is_full() { return false }
         self.elems[self.at_in] = v;
@@ -40,11 +39,10 @@ impl CircularBuffer {
 mod tests {
     use super::*;
     #[test]
-    fn when_create_capacity_zero_then_is_full_true_is_empty_true_size_zero() {
+    fn when_create_capacity_zero_then_is_full_true_is_empty_true() {
         let b = CircularBuffer::new(0);
         assert!(b.is_full());
         assert!(b.is_empty());
-        assert_eq!(0, b.size());
     }
     #[test]
     fn given_capacity_zero_when_put_then_return_false() {
@@ -57,11 +55,10 @@ mod tests {
         assert_eq!(i32::MIN, b.get());
     }
     #[test]
-    fn when_create_capacity_one_then_is_full_false_is_empty_true_size_zero() {
+    fn when_create_capacity_one_then_is_full_false_is_empty_true() {
         let b = CircularBuffer::new(1);
         assert_eq!(false, b.is_full());
         assert!(b.is_empty());
-        assert_eq!(0, b.size());
     }
     #[test]
     fn given_capacity_one_when_put_then_return_true_is_full_true_is_empty_false() {
@@ -78,13 +75,12 @@ mod tests {
         assert_eq!(v, b.get());
     }
     #[test]
-    fn given_capacity_one_and_one_put_when_get_then_is_full_false_is_empty_true_size_zero() {
+    fn given_capacity_one_and_one_put_when_get_then_is_full_false_is_empty_true() {
         let mut b = CircularBuffer::new(1);
         assert!(b.put(43));
         b.get();
         assert_eq!(false, b.is_full());
         assert!(b.is_empty());
-        assert_eq!(0, b.size());
     }
     #[test]
     fn given_capacity_one_and_one_put_when_get_twice_then_return_is_min_int() {
