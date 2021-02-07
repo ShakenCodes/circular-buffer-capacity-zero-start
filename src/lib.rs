@@ -32,8 +32,9 @@ mod tests {
         assert_eq!(i32::MIN, b.get());
     }
     #[test]
-    fn when_create_capacity_one_then_is_empty_true() {
+    fn when_create_capacity_one_then_is_empty_true_size_zero() {
         let b = CircularBuffer::new(0);
         assert!(b.is_empty());
+        assert_eq!(0, b.size());
     }
 }
