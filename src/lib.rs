@@ -119,11 +119,11 @@ mod tests {
     }
     #[test]
     fn given_capacity_two_and_put_twice_get_put_again_when_get_twice_then_value_returned_matches_later_puts() {
-        let v1 = 11;
+        let mut b = CircularBuffer::new(2);
+        assert!(b.put(44));
+
         let v2 = -99;
         let v3 = 2020;
-        let mut b = CircularBuffer::new(2);
-        assert!(b.put(v1));
         assert!(b.put(v2));
         b.get();
         assert!(b.put(v3));
@@ -132,46 +132,52 @@ mod tests {
     }
     #[test]
     fn given_capacity_two_and_put_twice_get_twice_put_again_when_get_twice_then_value_returned_matches_last_put() {
+        let mut b = create_full_buffer(2);
+        get_n_times(&mut b, 2);
         let v = 11;
-        let mut b = CircularBuffer::new(2);
-        assert!(b.put(42));
-        assert!(b.put(44));
-        b.get();
-        b.get();
         assert!(b.put(v));
         assert_eq!(v, b.get());
     }
     #[test]
     fn given_capacity_two_and_put_twice_get_twice_put_twice_again_when_get_twice_then_value_returned_matches_last_put() {
+        let mut b = create_full_buffer(2);
+        get_n_times(&mut b, 2);
         let v = 11;
-        let mut b = CircularBuffer::new(2);
-        assert!(b.put(42));
-        assert!(b.put(44));
-        b.get();
-        b.get();
         assert!(b.put(v));
         assert_eq!(v, b.get());
     }
     #[test]
     fn given_capacity_two_and_put_twice_when_get_twice_then_is_full_false_is_empty_true() {
-        let mut b = CircularBuffer::new(2);
-        assert!(b.put(42));
-        assert!(b.put(44));
-        b.get();
-        b.get();
+        let mut b = create_full_buffer(2);
+        get_n_times(&mut b, 2);
         assert_eq!(false, b.is_full());
         assert_eq!(true, b.is_empty());
     }
     #[test]
     fn given_capacity_two_and_put_twice_get_twice_when_put_twice_then_is_full_true_is_empty_false() {
-        let mut b = CircularBuffer::new(2);
-        assert!(b.put(42));
-        assert!(b.put(44));
-        b.get();
-        b.get();
-        assert!(b.put(46));
-        assert!(b.put(48));
+        let mut b = create_full_buffer(2);
+        get_n_times(&mut b, 2);
+        put_n_times(&mut b, 2);
         assert_eq!(true, b.is_full());
         assert_eq!(false, b.is_empty());
+    }
+//    #[test]
+//    fn given_capacity_ten_when_put_full_emptied_and_put_full_then_last_cell_matches() {
+//    }
+
+    fn create_full_buffer(c: usize) -> CircularBuffer {
+        let mut b = CircularBuffer::new(c);
+        put_n_times(&mut b, c);
+        b
+    }
+    fn get_n_times(b: &mut CircularBuffer, n: usize) {
+        for _ in 0..n {
+            b.get();
+        }
+    }
+    fn put_n_times(b: &mut CircularBuffer, n: usize) {
+        for i in 42..(42 + n) {
+            b.put(i as i32);
+        }
     }
 }
