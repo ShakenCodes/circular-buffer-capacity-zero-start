@@ -1,5 +1,5 @@
 This is an attempt at the CircularBuffer kata using the ZOMBIES approach.
-* Exercise starting at page 19,here: https://www.wingman-sw.com/slides/EmbeddedTdd-Grenning-v3r1.key.pdf
+* Exercise starting at page 19, here: https://www.wingman-sw.com/slides/EmbeddedTdd-Grenning-v3r1.key.pdf
 * James Grenning describes ZOMBIES at: http://blog.wingman-sw.com/tdd-guided-by-zombies
 
 Our team had a discussion of the "zero" step of the ZOMBIES process and identified two different approaches.
